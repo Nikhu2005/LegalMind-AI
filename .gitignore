@@ -1,0 +1,37 @@
+# Local court documents and generated data
+data/current_cases/
+data/judgments/
+data/ingestion/downloaded/
+data/ingestion/ingestion_log.json
+data/ingestion/download_manifest.jsonl
+data/sample.pdf
+data/legal_index.faiss
+data/metadata.json
+data/backups/
+
+# Local installers and tools
+.tools/
+
+# API keys and test files that may expose credentials
+app/test_gemini.py
+app/test_env.py
+test_env.py
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
