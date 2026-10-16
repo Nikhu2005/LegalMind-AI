@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import re
 
 from rank_bm25 import BM25Okapi
 
@@ -11,7 +12,19 @@ INDEX_PATH = "data/legal_index.faiss"
 METADATA_PATH = "data/metadata.json"
 
 
+
+
+
 class HybridRetriever:
+
+    @staticmethod
+    def tokenize(text):
+        return re.findall(
+            r"[a-z]+(?:'[a-z]+)?|\d+[a-z]?(?:\(\d+\))*",
+            text.lower()
+        )
+
+
 
     def __init__(self):
 
@@ -50,14 +63,6 @@ class HybridRetriever:
         )
 
         print("Hybrid retrieval system loaded.")
-
-    # ==========================================
-    # TOKENIZER
-    # ==========================================
-
-    def tokenize(self, text):
-
-        return text.lower().split()
 
     # ==========================================
     # SEMANTIC SEARCH
@@ -322,40 +327,9 @@ class HybridRetriever:
         section=None,
         document_type=None
     ):
+        filters_used = any((court, case_name, act, section, document_type))
 
-        # --------------------------------------
-        # Check whether filters are provided
-        # --------------------------------------
-
-        filters_used = any([
-            court,
-            case_name,
-            act,
-            section,
-            document_type
-        ])
-
-        # --------------------------------------
-        # Normal Hybrid Search
-        # --------------------------------------
-
-        if not filters_used:
-
-            semantic_results = self.semantic_search(
-                question,
-                top_k
-            )
-
-            keyword_results = self.keyword_search(
-                question,
-                top_k
-            )
-
-        # --------------------------------------
-        # Filtered Hybrid Search
-        # --------------------------------------
-
-         else:
+        if filters_used:
             filtered_documents = self.filter_documents(
                 court=court,
                 case_name=case_name,
@@ -363,184 +337,104 @@ class HybridRetriever:
                 section=section,
                 document_type=document_type
             )
-
             if not filtered_documents:
                 return []
 
-            semantic_results = (
-                self.filtered_semantic_search(
-                    question,
-                    filtered_documents,
-                    top_k
-                )
+            semantic_results = self.filtered_semantic_search(
+                question,
+                filtered_documents,
+                top_k
             )
-
-            keyword_results = (
-                self.filtered_keyword_search(
-                    question,
-                    filtered_documents,
-                    top_k
-                )
+            keyword_results = self.filtered_keyword_search(
+                question,
+                filtered_documents,
+                top_k
             )
+        else:
+            semantic_results = self.semantic_search(question, top_k)
+            keyword_results = self.keyword_search(question, top_k)
 
-        # ======================================
-        # COMBINE RESULTS
-        # ======================================
+        def result_key(result):
+            metadata = result["metadata"]
+            source_file = metadata.get("source_file", "unknown")
+            chunk_id = metadata.get("chunk_id")
+            if chunk_id is not None:
+                return source_file, str(chunk_id)
+
+            text = " ".join(metadata.get("text", "").lower().split())
+            return (
+                source_file,
+                str(metadata.get("page_number", "unknown")),
+                text
+            )
 
         combined = {}
+        for rank, result in enumerate(semantic_results, start=1):
+            key = result_key(result)
+            combined.setdefault(key, {
+                "metadata": result["metadata"],
+                "semantic_score": 0.0,
+                "keyword_score": 0.0,
+                "semantic_rank": None,
+                "keyword_rank": None
+            })
+            combined[key]["semantic_score"] = float(result["score"])
+            combined[key]["semantic_rank"] = rank
 
-        # Semantic results
-        for result in semantic_results:
+        for rank, result in enumerate(keyword_results, start=1):
+            key = result_key(result)
+            combined.setdefault(key, {
+                "metadata": result["metadata"],
+                "semantic_score": 0.0,
+                "keyword_score": 0.0,
+                "semantic_rank": None,
+                "keyword_rank": None
+            })
+            combined[key]["keyword_score"] = float(result["score"])
+            combined[key]["keyword_rank"] = rank
 
-            chunk_id = result["metadata"].get(
-                "chunk_id"
-            )
-
-            combined[chunk_id] = {
-                "metadata":
-                    result["metadata"],
-
-                "semantic_score":
-                    result["score"],
-
-                "keyword_score":
-                    0.0
-            }
-
-        # Keyword results
-        for result in keyword_results:
-
-            chunk_id = result["metadata"].get(
-                "chunk_id"
-            )
-
-            if chunk_id not in combined:
-
-                combined[chunk_id] = {
-                    "metadata":
-                        result["metadata"],
-
-                    "semantic_score":
-                        0.0,
-
-                    "keyword_score":
-                        result["score"]
-                }
-
-            else:
-
-                combined[chunk_id][
-                    "keyword_score"
-                ] = result["score"]
-
-        # ======================================
-        # SCORE NORMALIZATION
-        # ======================================
-
+        rank_constant = 60
         results = []
-
-        semantic_scores = [
-            item["semantic_score"]
-            for item in combined.values()
-        ]
-
-        keyword_scores = [
-            item["keyword_score"]
-            for item in combined.values()
-        ]
-
-        max_semantic = max(
-            semantic_scores,
-            default=1.0
-        )
-
-        max_keyword = max(
-            keyword_scores,
-            default=1.0
-        )
-
         for item in combined.values():
-
-            # Semantic normalization
-            if max_semantic != 0:
-
-                semantic_score = (
-                    item["semantic_score"]
-                    / max_semantic
-                )
-
-            else:
-
-                semantic_score = 0
-
-            # Keyword normalization
-            if max_keyword != 0:
-
-                keyword_score = (
-                    item["keyword_score"]
-                    / max_keyword
-                )
-
-            else:
-
-                keyword_score = 0
-
-            # 70% Semantic + 30% Keyword
-            hybrid_score = (
-                0.70 * semantic_score
+            semantic_rank = item["semantic_rank"]
+            keyword_rank = item["keyword_rank"]
+            score = (
+                (0.70 / (rank_constant + semantic_rank)
+                 if semantic_rank is not None else 0.0)
                 +
-                0.30 * keyword_score
+                (0.30 / (rank_constant + keyword_rank)
+                 if keyword_rank is not None else 0.0)
             )
-
             results.append({
-
-                "score":
-                    hybrid_score,
-
-                "semantic_score":
-                    item["semantic_score"],
-
-                "keyword_score":
-                    item["keyword_score"],
-
-                "metadata":
-                    item["metadata"]
+                "score": score,
+                "semantic_score": item["semantic_score"],
+                "keyword_score": item["keyword_score"],
+                "metadata": item["metadata"]
             })
 
-        # ======================================
-        # SORT RESULTS
-        # ======================================
+        results.sort(key=lambda item: item["score"], reverse=True)
 
-        results.sort(
-            key=lambda x: x["score"],
-            reverse=True
-        )
-
-      
-        # Return distinct judgments, not repeated chunks
         unique_results = []
-        seen_cases = set()
-
+        seen_passages = set()
         for result in results:
             metadata = result["metadata"]
-
-            case_key = (
-                metadata.get("source_file")
-                or metadata.get("case_number")
-                or metadata.get("case_name")
-                or metadata.get("chunk_id")
+            text = " ".join(metadata.get("text", "").lower().split())
+            passage_key = (
+                metadata.get("source_file", "unknown"),
+                metadata.get("page_number", "unknown"),
+                text
             )
-
-            if case_key in seen_cases:
+            if passage_key in seen_passages:
                 continue
 
-            seen_cases.add(case_key)
+            seen_passages.add(passage_key)
             unique_results.append(result)
-
             if len(unique_results) >= top_k:
                 break
 
         return unique_results
+
+
 
 
 
@@ -564,17 +458,35 @@ if __name__ == "__main__":
         "\nSearching Supreme Court judgments..."
     )
 
+
     results = retriever.search(
         question,
-        top_k=5,
-        court="Supreme Court of India",
-        document_type="Judgment"
+        top_k=5
     )
 
     print(
         "\nResults found:",
         len(results)
     )
+
+    print("\n========================================")
+
+    for i, result in enumerate(results, start=1):
+        metadata = result["metadata"]
+
+        print(f"\nRESULT {i}")
+        print("Hybrid Score:", round(result["score"], 4))
+        print("Semantic Score:", round(result["semantic_score"], 4))
+        print("Keyword Score:", round(result["keyword_score"], 4))
+        print("Case:", metadata.get("case_name") or "Unknown")
+        print("Court:", metadata.get("court") or "Unknown")
+        print("Date:", metadata.get("judgment_date") or "Unknown")
+        print("Citation:", metadata.get("citation") or "Unknown")
+        print("Page:", metadata.get("page_number", "Unknown"))
+        print("\nText:")
+        print(metadata.get("text", "")[:600])
+        print("\n----------------------------------------")
+
 
     print("\n========================================")
 
