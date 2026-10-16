@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.documents.chunker import create_chunks
 from app.documents.current_case import (
@@ -23,6 +23,7 @@ from app.rag.generator import generate_answer
 from app.rag.hybrid_retriever import HybridRetriever
 from app.rag.reranker import LegalReranker
 from app.rag.similar_judgments import find_similar_judgments
+from app.ingestion.sci_web_search import search_recent_sci_judgments
 
 
 
@@ -60,6 +61,11 @@ class SearchRequest(BaseModel):
     top_k: int = 5
     court: str | None = None
     document_type: str | None = None
+
+
+class WebSearchRequest(BaseModel):
+    question: str
+    top_k: int = Field(default=5, ge=1, le=20)
 
 
 class AskRequest(BaseModel):
@@ -452,6 +458,46 @@ async def compare_uploaded_cases_endpoint(
 # ============================================================
 # LEGAL SEARCH
 # ============================================================
+
+@app.post("/web-search")
+def search_web_cases(request: WebSearchRequest):
+    question = request.question.strip()
+    if not question:
+        raise HTTPException(
+            status_code=400,
+            detail="Search question cannot be empty.",
+        )
+    if len(question) > 500:
+        raise HTTPException(
+            status_code=400,
+            detail="Search question must be 500 characters or fewer.",
+        )
+
+    try:
+        search_result = search_recent_sci_judgments(
+            question,
+            max_results=request.top_k,
+        )
+    except Exception as error:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Official Supreme Court web search failed: {error}",
+        )
+
+    return {
+        "question": question,
+        "mode": "official_web",
+        "source_scope": "Supreme Court of India judgments currently linked from the official homepage",
+        "coverage_note": (
+            "This performs a bounded live scan of up to 10 homepage-linked judgment PDFs. "
+            "It is not a search of the full historical court database. CAPTCHA-protected search forms are not automated."
+        ),
+        "source_pages_scanned": search_result["source_pages_scanned"],
+        "pdfs_examined": search_result["pdfs_examined"],
+        "warnings": search_result["warnings"],
+        "total_results": len(search_result["results"]),
+        "results": search_result["results"],
+    }
 
 @app.post("/search")
 def search_cases(request: SearchRequest):

@@ -355,8 +355,7 @@ class HybridRetriever:
         # Filtered Hybrid Search
         # --------------------------------------
 
-        else:
-
+         else:
             filtered_documents = self.filter_documents(
                 court=court,
                 case_name=case_name,

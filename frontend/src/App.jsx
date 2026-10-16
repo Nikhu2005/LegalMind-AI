@@ -53,6 +53,8 @@ const LANGUAGE_OPTIONS = [
 
 const SELECT_CLASS =
   "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+const RRF_RANK_CONSTANT = 60;
+const MAX_RRF_SCORE = 1 / (RRF_RANK_CONSTANT + 1);
 
 function App() {
   const [activePage, setActivePage] = useState("Dashboard");
@@ -64,6 +66,7 @@ function App() {
   const [error, setError] = useState("");
 
   const [searchQuestion, setSearchQuestion] = useState("");
+  const [searchMode, setSearchMode] = useState("local");
   const [searchCourt, setSearchCourt] = useState("");
   const [searchDocumentType, setSearchDocumentType] = useState("");
   const [searchTopK, setSearchTopK] = useState(10);
@@ -309,16 +312,23 @@ function App() {
     setSearchResults(null);
 
     try {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question,
-          top_k: Number(searchTopK),
-          court: searchCourt || null,
-          document_type: searchDocumentType || null,
-        }),
-      });
+      const response = await fetch(
+        searchMode === "web" ? "/api/web-search" : "/api/search",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            searchMode === "web"
+              ? { question, top_k: Number(searchTopK) }
+              : {
+                  question,
+                  top_k: Number(searchTopK),
+                  court: searchCourt || null,
+                  document_type: searchDocumentType || null,
+                },
+          ),
+        },
+      );
 
       const data = await response.json();
 
@@ -767,7 +777,11 @@ function App() {
       <PageHeader
         eyebrow="Legal Research"
         title="Case Law Search"
-        description="Find relevant Indian judgments using hybrid semantic and keyword retrieval across the LegalMind AI knowledge base."
+        description={
+          searchMode === "web"
+            ? "Search recent judgments linked from the official Supreme Court of India website."
+            : "Find Indian judgments in the LegalMind AI local knowledge base using hybrid semantic and keyword retrieval."
+        }
       />
 
       <section className="max-w-6xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -779,23 +793,61 @@ function App() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-900">
-                  Search the Legal Knowledge Base
+                  {searchMode === "web"
+                    ? "Search Official Court Judgments"
+                    : "Search the Legal Knowledge Base"}
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Search by legal question, issue, Act, section, doctrine, or
-                  case-law topic.
+                  {searchMode === "web"
+                    ? "Search recent Supreme Court judgment PDFs currently linked from its official homepage."
+                    : "Search by legal question, issue, Act, section, doctrine, or case-law topic."}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-white px-3 py-1.5 text-[11px] font-bold text-blue-700 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Hybrid Retrieval Active
+              {searchMode === "web" ? "Live SCI source scan" : "Hybrid Retrieval Active"}
             </div>
           </div>
         </div>
 
         <div className="p-6">
+          <div className="mb-4 inline-flex rounded-xl border border-slate-200 bg-slate-50 p-1">
+            <button
+              type="button"
+              aria-pressed={searchMode === "local"}
+              onClick={() => {
+                setSearchMode("local");
+                setSearchResults(null);
+                setError("");
+              }}
+              className={`rounded-lg px-4 py-2 text-xs font-semibold transition ${
+                searchMode === "local"
+                  ? "bg-white text-blue-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              Local Index
+            </button>
+            <button
+              type="button"
+              aria-pressed={searchMode === "web"}
+              onClick={() => {
+                setSearchMode("web");
+                setSearchResults(null);
+                setError("");
+              }}
+              className={`rounded-lg px-4 py-2 text-xs font-semibold transition ${
+                searchMode === "web"
+                  ? "bg-white text-blue-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              Official Web Search
+            </button>
+          </div>
+
           <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-4">
             <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
               Legal Question or Search Topic
@@ -815,7 +867,11 @@ function App() {
                       searchCaseLaw();
                     }
                   }}
-                  placeholder="e.g. natural justice in termination of service"
+                  placeholder={
+                    searchMode === "web"
+                      ? "e.g. freedom of speech, bail, or a case name"
+                      : "e.g. natural justice in termination of service"
+                  }
                   className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 />
               </div>
@@ -829,12 +885,12 @@ function App() {
                 {searchLoading ? (
                   <>
                     <Loader2 size={18} className="animate-spin" />
-                    Searching...
+                    {searchMode === "web" ? "Checking SCI judgments..." : "Searching..."}
                   </>
                 ) : (
                   <>
                     <Search size={18} />
-                    Search Cases
+                    {searchMode === "web" ? "Search Official SCI" : "Search Cases"}
                   </>
                 )}
               </button>
@@ -842,53 +898,61 @@ function App() {
 
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
               <p className="text-[11px] text-slate-400">
-                Press Enter to search. Use filters to narrow the research scope.
+                {searchMode === "web"
+                  ? "Press Enter to scan recent public SCI judgment links."
+                  : "Press Enter to search. Use filters to narrow the research scope."}
               </p>
               <span className="text-[11px] font-medium text-slate-400">
-                Semantic + keyword retrieval
+                {searchMode === "web" ? "Official source · live PDF text" : "Semantic + keyword retrieval"}
               </span>
             </div>
           </div>
 
-          <div className="mt-5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-            <SlidersHorizontal size={14} className="text-blue-600" />
-            Search Filters
-          </div>
+          {searchMode === "local" && (
+            <div className="mt-5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <SlidersHorizontal size={14} className="text-blue-600" />
+              Search Filters
+            </div>
+          )}
 
           <div className="mt-3 grid gap-4 md:grid-cols-3">
-            <div>
-              <label className="mb-2 block text-xs font-semibold text-slate-500">
-                Court
-              </label>
-              <select
-                value={searchCourt}
-                onChange={(event) => setSearchCourt(event.target.value)}
-                className={SELECT_CLASS}
-              >
-                {COURT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {searchMode === "local" && (
+              <div>
+                <label className="mb-2 block text-xs font-semibold text-slate-500">
+                  Court
+                </label>
+                <select
+                  value={searchCourt}
+                  onChange={(event) => setSearchCourt(event.target.value)}
+                  className={SELECT_CLASS}
+                >
+                  {COURT_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
-            <div>
-              <label className="mb-2 block text-xs font-semibold text-slate-500">
-                Document Type
-              </label>
-              <select
-                value={searchDocumentType}
-                onChange={(event) => setSearchDocumentType(event.target.value)}
-                className={SELECT_CLASS}
-              >
-                {DOCUMENT_TYPE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {searchMode === "local" && (
+              <div>
+                <label className="mb-2 block text-xs font-semibold text-slate-500">
+                  Document Type
+                </label>
+                <select
+                  value={searchDocumentType}
+                  onChange={(event) => setSearchDocumentType(event.target.value)}
+                  className={SELECT_CLASS}
+                >
+                  {DOCUMENT_TYPE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="mb-2 block text-xs font-semibold text-slate-500">
@@ -911,8 +975,9 @@ function App() {
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <Search size={14} />
               <span>
-                Searches indexed legal passages and returns the most relevant
-                matches.
+                {searchMode === "web"
+                  ? "Scans up to 10 judgment PDFs linked from the SCI homepage. Historical coverage is not included; CAPTCHA search forms are not automated."
+                  : "Searches indexed legal passages and returns the most relevant matches."}
               </span>
             </div>
 
@@ -2119,6 +2184,7 @@ function LegalDocumentCard({ document, onClick }) {
 
 function CaseLawSearchResults({ result }) {
   const results = result.results || [];
+  const isWebSearch = result.mode === "official_web";
 
   return (
     <section className="mt-6 max-w-6xl">
@@ -2128,7 +2194,7 @@ function CaseLawSearchResults({ result }) {
             Research Results
           </p>
           <h3 className="mt-1 text-xl font-bold tracking-tight text-slate-900">
-            {result.total_results || 0} Relevant Judgment
+            {result.total_results || 0} {isWebSearch ? "Matching" : "Relevant"} Judgment
             {(result.total_results || 0) === 1 ? "" : "s"}
           </h3>
           <p className="mt-1 max-w-3xl text-sm text-slate-500">
@@ -2142,13 +2208,27 @@ function CaseLawSearchResults({ result }) {
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-[11px] font-bold text-emerald-700">
             <CheckCircle2 size={14} />
-            Hybrid Search
+            {isWebSearch ? "Official SCI Web Search" : "Hybrid Search"}
           </span>
           <span className="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
             {results.length} displayed
           </span>
         </div>
       </div>
+
+      {isWebSearch && (
+        <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-5 text-blue-800">
+          <p>{result.coverage_note}</p>
+          <p className="mt-1">
+            Scanned {result.source_pages_scanned || 0} official judgment page(s) and {result.pdfs_examined || 0} PDF(s).
+          </p>
+          {result.warnings?.map((warning, index) => (
+            <p key={`${warning}-${index}`} className="mt-1 text-amber-800">
+              {warning}
+            </p>
+          ))}
+        </div>
+      )}
 
       {results.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
@@ -2166,30 +2246,152 @@ function CaseLawSearchResults({ result }) {
       ) : (
         <div className="space-y-4">
           {results.map((item, index) => (
-            <CaseLawResultCard
-              key={`${item.case_name || "case"}-${item.case_number || ""}-${index}`}
-              item={item}
-              index={index}
-            />
+            isWebSearch ? (
+              <WebCaseLawResultCard
+                key={`${item.case_name || "case"}-${item.case_number || ""}-${index}`}
+                item={item}
+                index={index}
+              />
+            ) : (
+              <CaseLawResultCard
+                key={`${item.case_name || "case"}-${item.case_number || ""}-${index}`}
+                item={item}
+                index={index}
+              />
+            )
           ))}
         </div>
       )}
 
       {results.length > 0 && (
         <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-800">
-          <strong>Research note:</strong> Relevance scores indicate retrieval
-          similarity, not legal correctness, binding precedent, or likelihood of
-          a particular outcome. Verify the original judgment and current law
-          before relying on it.
+          <strong>Research note:</strong>{" "}
+          {isWebSearch
+            ? "Matches are based on query terms found in extracted PDF text and are not a measure of legal relevance or correctness. Verify the original judgment and current law."
+            : "Relevance scores are normalized hybrid ranking scores, not probabilities or measures of legal correctness, binding precedent, or likely outcome. Verify the original judgment and current law before relying on it."}
         </div>
       )}
     </section>
   );
 }
 
+function WebCaseLawResultCard({ item, index }) {
+  return (
+    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="p-5 sm:p-6">
+        <div className="flex items-start gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-sm font-bold text-blue-700">
+            {index + 1}
+          </div>
+          <div className="min-w-0 flex-1">
+            <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-700">
+              Official Supreme Court source
+            </span>
+            <h4 className="mt-2 text-base font-bold leading-6 text-slate-900">
+              {item.case_name || "Case name unavailable in PDF text"}
+            </h4>
+            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+              <span className="font-medium text-slate-700">
+                {item.court || "Supreme Court of India"}
+              </span>
+              {item.judgment_date && <span>Date: {item.judgment_date}</span>}
+              {item.citation && <span>Citation: {item.citation}</span>}
+              {item.case_number && <span>Case: {item.case_number}</span>}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-500">
+          <span className="rounded-full bg-slate-100 px-3 py-1">
+            Page {item.page_number || "unavailable"} of {item.page_count || "?"}
+          </span>
+          {item.matched_terms?.map((term) => (
+            <span key={term} className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700">
+              Matched: {term}
+            </span>
+          ))}
+        </div>
+
+        {item.text && (
+          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <BookOpen size={15} className="text-blue-600" />
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Judgment Text Excerpt
+              </p>
+            </div>
+            <p className="text-sm leading-6 text-slate-600">{item.text}</p>
+          </div>
+        )}
+        {item.text_scan_truncated && (
+          <p className="mt-2 text-[11px] text-amber-700">
+            Text search was limited to the first 500 pages of this PDF.
+          </p>
+        )}
+
+        <div className="mt-5 flex flex-wrap gap-3 border-t border-slate-100 pt-4">
+          {item.source_url && (
+            <a
+              href={item.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              <ExternalLink size={15} />
+              Official case page
+            </a>
+          )}
+          {item.pdf_url && (
+            <a
+              href={item.pdf_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white hover:bg-blue-800"
+            >
+              <ExternalLink size={15} />
+              Open original PDF
+            </a>
+          )}
+        </div>
+        <div className="mt-3 space-y-1 break-all text-[11px] leading-5 text-slate-500">
+          {item.source_url && (
+            <p>
+              <span className="font-semibold text-slate-600">Source URL: </span>
+              <a
+                href={item.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-700 underline"
+              >
+                {item.source_url}
+              </a>
+            </p>
+          )}
+          {item.pdf_url && (
+            <p>
+              <span className="font-semibold text-slate-600">PDF URL: </span>
+              <a
+                href={item.pdf_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-700 underline"
+              >
+                {item.pdf_url}
+              </a>
+            </p>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function CaseLawResultCard({ item, index }) {
   const score = Number(item.score || 0);
-  const scorePercent = Math.max(0, Math.min(100, score * 100));
+  const scorePercent = Math.max(
+    0,
+    Math.min(100, (score / MAX_RRF_SCORE) * 100),
+  );
   const sourceName = item.source_file
     ? String(item.source_file).split(/[\\/]/).pop()
     : "";
