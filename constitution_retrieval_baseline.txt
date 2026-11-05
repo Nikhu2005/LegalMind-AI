@@ -1,0 +1,250 @@
+LEGALMIND AI — CONSTITUTION RETRIEVAL BASELINE
+==============================================================================
+Generated UTC: 2026-10-16T20:56:38+00:00
+Input PDF: C:\Users\nikhi\LegalAI\data\test_constitutional_pdfs\constitution of india.pdf
+PDF SHA-256: 4699ff98cece2142f96ce0dba62539e8219e658ba6b595efcb666caf2fcea26d
+PDF pages: 404; temporary chunks: 1096
+Chunking: existing parser/chunker; 1,200 characters, 200 overlap, page-bounded.
+Page references: one-based physical PDF page positions.
+Production data: not loaded or changed (no FAISS/metadata/BM25 production files accessed).
+Temporary retrieval: in-memory BM25 and in-memory FAISS IndexFlatIP only.
+Fusion: 0.70/(60 + semantic rank) + 0.30/(60 + keyword rank); top 5 per method, then production-style dedup.
+Embedding: project EmbeddingModel; normalized embeddings; offline mode enforced.
+Human judgments: none supplied; metrics are intentionally not computed.
+
+Extracted non-empty pages: 404
+Semantic model loaded from local availability; offline flags were set before model initialization.
+
+RANKED HYBRID RESULTS
+==============================================================================
+
+Q01: Which freedoms are protected by Article 19(1)?
+Expected source passage/page(s): PDF page(s) 40, 41; Clauses (a)-(e) and (g): speech/expression, assembly, associations, movement, residence, and occupation/trade/business; clause (f) is omitted.
+  #1 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.561926 | page=5 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (ii) PART III FUNDAMENTAL RIGHTS General 12. Definition. 13. Laws inconsistent with or in derogation of the fundamental rights. Right to Equality 14. Equality before law. 15. Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth. 16. Equality of opportunity in matters of public employment. 17. Abolition of Untouchability. 18. Abolition of titles. Right to Freedo...
+  #2 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.561587 | page=49 | source=constitution of india.pdf
+     Excerpt: in force.] 3[31C. Saving of laws giving effect to certain directive principles.— Notwithstanding anything contained in article 13, no law giving effect to the policy of the State towards securing 4[all or any of the principles laid down in Part IV] shall be deemed to be void on the ground that it is inconsistent with, or takes away or abridges any of the rights conferred by 5[article 14 or article 19;] 6[and no la...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.531858 | page=40 | source=constitution of india.pdf
+     Excerpt: —(1) No title, not being a military or academic distinction, shall be conferred by the State. (2) No citizen of India shall accept any title from any foreign State. (3) No person who is not a citizen of India shall, while he holds any office of profit or trust under the State, accept without the consent of the President any title from any foreign State. (4) No person holding any office of profit or trust under the...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.529512 | page=77 | source=constitution of india.pdf
+     Excerpt: r the purposes of this article" (w.e.f. 1-3-1985). 3. Ins. by s. 3, ibid. (w.e.f. 1-3-1985). 4. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 20, for art. 103 (w.e.f. 3-1-1977) and further subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 14, for art. 103 (w.e.f. 20-6-1979).
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.521707 | page=6 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (iii) Cultural and Educational Rights 29. Protection of interests of minorities. 30. Right of minorities to establish and administer educational institutions. [31. Compulsory acquisition of property. —Omitted.] Saving of Certain Laws 31A. Saving of Laws providing for acquisition of estates, etc. 31B. Validation of certain Acts and Regulations. 31C. Saving of laws giving effect to certain directiv...
+
+Q02: Which provision protects freedom of speech and expression?
+Expected source passage/page(s): PDF page(s) 40; Article 19(1)(a).
+  #1 hybrid=0.01577621 | BM25 rank=2 score=19.068634 | semantic rank=4 cosine=0.536322 | page=5 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (ii) PART III FUNDAMENTAL RIGHTS General 12. Definition. 13. Laws inconsistent with or in derogation of the fundamental rights. Right to Equality 14. Equality before law. 15. Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth. 16. Equality of opportunity in matters of public employment. 17. Abolition of Untouchability. 18. Abolition of titles. Right to Freedo...
+  #2 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.556583 | page=118 | source=constitution of india.pdf
+     Excerpt: ating the procedure of the Legislature, there shall be freedom of speech in the Legislature of every State. (2) No member of the Legislature of a State shall be liable to any proceedings in any court in respect of anything said or any vote given by him in the Legislature or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority of a House of such a Legislatu...
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.545285 | page=6 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (iii) Cultural and Educational Rights 29. Protection of interests of minorities. 30. Right of minorities to establish and administer educational institutions. [31. Compulsory acquisition of property. —Omitted.] Saving of Certain Laws 31A. Saving of Laws providing for acquisition of estates, etc. 31B. Validation of certain Acts and Regulations. 31C. Saving of laws giving effect to certain directiv...
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.537598 | page=78 | source=constitution of india.pdf
+     Excerpt: e provisions of this Constitution and to the rules and standing orders regulating the procedure of Parliament, there shall be freedom of speech in Parliament. (2) No member of Parliament shall be liable to any proceedings in any court in respect of anything said or any vote given by him in Parliament or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.516549 | page=238 | source=constitution of india.pdf
+     Excerpt: ent making provision for the language to be used for any of the purposes mentioned in clause (1) of article 348 shall be introduced or moved in either House of Parliament without the previous sanction of the President, and the President shall not give his sanction to the introduction of any such Bill or the moving of any such amendment except after he has taken into consideration the recommendations of the Commiss...
+
+Q03: What restrictions may apply to Article 19(1)(a)?
+Expected source passage/page(s): PDF page(s) 41; Article 19(2), including grounds such as public order, security of the State, decency or morality, contempt of court, defamation, and incitement to an offence.
+  #1 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.487585 | page=77 | source=constitution of india.pdf
+     Excerpt: r the purposes of this article" (w.e.f. 1-3-1985). 3. Ins. by s. 3, ibid. (w.e.f. 1-3-1985). 4. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 20, for art. 103 (w.e.f. 3-1-1977) and further subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 14, for art. 103 (w.e.f. 20-6-1979).
+  #2 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.485934 | page=380 | source=constitution of india.pdf
+     Excerpt: in such modified form, as the case may be, and where they are so disapproved, they shall be of no effect. (3) The Chairman or the Speaker of a House may, without prejudice to the provisions of article 105 or, as the case may be, article 194, and to any other power which he may have under this Constitution direct that any wilful contravention by any person of the rules made under this paragraph may be dealt with in...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.483068 | page=178 | source=constitution of india.pdf
+     Excerpt: States except as provided in articles 249 and 250 should be regulated in such States by Parliament by law, and if resolutions to that effect are passed by all the Houses of the Legislatures of those States, it shall be lawful for Parliament to pass an act for regulating that matter accordingly, and any Act so passed shall apply to such States and to any other State by which it is adopted afterwards by resolution p...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.482897 | page=207 | source=constitution of india.pdf
+     Excerpt: under the Government of the Dominion of India or a Province thereof; (b) any dispute in respect of any right, liability or obligation under article 314 as originally enacted. (4) The provisions of this article shall have effect notwithstanding anything in article 314 as originally enacted or in any other provision of this Constitution.]
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.481389 | page=34 | source=constitution of india.pdf
+     Excerpt: matters.—(1) Any law referred to in article 2 or article 3 shall contain such provisions for the amendment of the First Schedule and the Fourth Schedule as may be necessary to give effect to the provisions of the law and may also contain such supplemental, incidental and consequential provisions (including provisions as to representation in Parliament and in the Legislature or Legislatures of the State or States a...
+
+Q04: What right allows citizens to assemble peacefully without arms?
+Expected source passage/page(s): PDF page(s) 40; Article 19(1)(b).
+  #1 hybrid=0.01585553 | BM25 rank=1 score=25.855007 | semantic rank=4 cosine=0.393409 | page=40 | source=constitution of india.pdf
+     Excerpt: —(1) No title, not being a military or academic distinction, shall be conferred by the State. (2) No citizen of India shall accept any title from any foreign State. (3) No person who is not a citizen of India shall, while he holds any office of profit or trust under the State, accept without the consent of the President any title from any foreign State. (4) No person holding any office of profit or trust under the...
+  #2 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.434599 | page=6 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (iii) Cultural and Educational Rights 29. Protection of interests of minorities. 30. Right of minorities to establish and administer educational institutions. [31. Compulsory acquisition of property. —Omitted.] Saving of Certain Laws 31A. Saving of Laws providing for acquisition of estates, etc. 31B. Validation of certain Acts and Regulations. 31C. Saving of laws giving effect to certain directiv...
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.414877 | page=47 | source=constitution of india.pdf
+     Excerpt: ined in article 13, no law providing for— (a) the acquisition by the State of any estate or of any rights therein or the extinguishment or modification of any such rights, or (b) the taking over of the management of any property by the State for a limited period either in the public interest or in order to secure the proper management of the property, or (c) the amalgamation of two or more corporations either in t...
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.412823 | page=50 | source=constitution of india.pdf
+     Excerpt: idity of State laws not to be considered in proceedings under article 32.].—Omitted by the Constitution (Forty-third Amendment) Act, 1977, s. 3 (w.e.f. 13-4-1978). 2[33. Power of Parliament to modify the rights conferred by this Part in their application to Forces, etc.—Parliament may, by law, determine to what extent any of the rights conferred by this Part shall, in their application to,— (a) the members of the...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.391217 | page=202 | source=constitution of india.pdf
+     Excerpt: ate as may be required in the public interest: ______________________________________________ 1. Ins. by the Constitution (Seventh Amendment) Act, 1956, s. 29 and Sch. (w.e.f. 1-11-1956).
+
+Q05: What right covers forming associations or unions?
+Expected source passage/page(s): PDF page(s) 40; Article 19(1)(c), including associations, unions, or co-operative societies.
+  #1 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.451415 | page=226 | source=constitution of india.pdf
+     Excerpt: hall cause all such reports to be laid before each House of Parliament along with a memorandum explaining the action taken or proposed to be taken on the recommendations relating to the Union and the reasons for the non-acceptance, if any, of any of such recommendations. ______________________________________________ 1. The words "and Scheduled Tribes" omitted by the Constitution (Eighty-ninth Amendment) Act, 2003...
+  #2 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.415763 | page=344 | source=constitution of india.pdf
+     Excerpt: financial corporations, but not including co-operative societies. 44. Incorporation, regulation and winding up of corporations, whether trading or not, with objects not confined to one State, but not including universities. 45. Banking. 46. Bills of exchange, cheques, promissory notes and other like instruments. 47. Insurance. 48. Stock exchanges and futures markets. 49. Patents, inventions and designs; copyright;...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.414250 | page=88 | source=constitution of india.pdf
+     Excerpt: Association and another Vs Union of India judgment dated 16-10-2015, AIR 2016 SC 117. 5. Ins. by the Constitution (Fifteenth Amendment) Act, 1963, s. 2 (w.e.f. 5-10-1963).
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.413342 | page=231 | source=constitution of india.pdf
+     Excerpt: as to the steps that should be taken by the Union or any State to remove such difficulties and to improve their condition and as to the grants that should be made for the purpose by the Union or any State and the conditions subject to which such grants should be made, and the order appointing such Commission shall define ______________________________________________ 1. Ins. by the Constitution (One Hundred and Fi...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.387979 | page=45 | source=constitution of india.pdf
+     Excerpt: er, morality and health, every religious denomination or any section thereof shall have the right— (a) to establish and maintain institutions for religious and charitable purposes;
+
+Q06: What right allows citizens to move freely throughout India?
+Expected source passage/page(s): PDF page(s) 40; Article 19(1)(d).
+  #1 hybrid=0.01639344 | BM25 rank=1 score=23.136112 | semantic rank=1 cosine=0.632672 | page=40 | source=constitution of india.pdf
+     Excerpt: —(1) No title, not being a military or academic distinction, shall be conferred by the State. (2) No citizen of India shall accept any title from any foreign State. (3) No person who is not a citizen of India shall, while he holds any office of profit or trust under the State, accept without the consent of the President any title from any foreign State. (4) No person holding any office of profit or trust under the...
+  #2 hybrid=0.01594982 | BM25 rank=2 score=13.305496 | semantic rank=3 cosine=0.582091 | page=4 | source=constitution of india.pdf
+     Excerpt: persons of Indian origin residing outside India. 9. Persons voluntarily acquiring citizenship of a foreign State not to be citizens. 10. Continuance of the rights of citizenship. 11. Parliament to regulate the right of citizenship by law.
+  #3 hybrid=0.01569940 | BM25 rank=3 score=12.381111 | semantic rank=4 cosine=0.553960 | page=45 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part III.—Fundamental Rights) 14 Right against Exploitation 23. Prohibition of traffic in human beings and forced labour.—(1) Traffic in human beings and begar and other similar forms of forced labour are prohibited and any contravention of this provision shall be an offence punishable in accordance with law. (2) Nothing in this article shall prevent the State from imposing compulsory se...
+  #4 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.602111 | page=50 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part III.—Fundamental Rights) 19 Right to Constitutional Remedies 32. Remedies for enforcement of rights conferred by this Part.—(1) The right to move the Supreme Court by appropriate proceedings for the enforcement of the rights conferred by this Part is guaranteed. (2) The Supreme Court shall have power to issue directions or orders or writs, including writs in the nature of habeas cor...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.550614 | page=38 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part III.—Fundamental Rights) 7 (a) access to shops, public restaurants, hotels and places of public entertainment; or (b) the use of wells, tanks, bathing ghats, roads and places of public resort maintained wholly or partly out of State funds or dedicated to the use of the general public. (3) Nothing in this article shall prevent the State from making any special provision for women and...
+
+Q07: What right covers residing and settling in any part of India?
+Expected source passage/page(s): PDF page(s) 41; Article 19(1)(e).
+  #1 hybrid=0.01577621 | BM25 rank=2 score=17.764818 | semantic rank=4 cosine=0.499612 | page=36 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part II.—Citizenship) 5 Provided that nothing in this article shall apply to a person who, after having so migrated to the territory now included in Pakistan, has returned to the territory of India under a permit for resettlement or permanent return issued by or under the authority of any law and every such person shall for the purposes of clause (b) of article 6 be deemed to have migrat...
+  #2 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.525431 | page=48 | source=constitution of india.pdf
+     Excerpt: s is within the ceiling limit applicable to him under any law for the time being in force or any building or structure standing thereon or appurtenant thereto, unless the law relating to the acquisition of such land, building or structure, provides for payment of compensation at a rate which shall not be less than the market value thereof.] (2) In this article,— 3[(a) the expression “estate” shall, in relation to...
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.506187 | page=392 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Appendix I) 359 (d) Assam Sector (i) Kalabari (Boroibari) area in Assam sector The boundary shall be drawn from existing Boundary Pillar No. 1066/24-T to Boundary Pillar No. 1067/16-T as surveyed jointly and agreed in August, 2011. (ii) Pallathal area in Assam sector The boundary shall be drawn from existing Boundary Pillar No. 1370/3-S to 1371/ 6-S to follow the outer edge of the tea ga...
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.499847 | page=38 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part III.—Fundamental Rights) 7 (a) access to shops, public restaurants, hotels and places of public entertainment; or (b) the use of wells, tanks, bathing ghats, roads and places of public resort maintained wholly or partly out of State funds or dedicated to the use of the general public. (3) Nothing in this article shall prevent the State from making any special provision for women and...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.496512 | page=37 | source=constitution of india.pdf
+     Excerpt: custom or usage having in the territory of India the force of law; (b) “laws in force” includes laws passed or made by a Legislature or other competent authority in the territory of India before the commencement of this Constitution and not previously repealed, notwithstanding that any such law or any part thereof may not be then in operation either at all or in particular areas. 1[(4) Nothing in this article shal...
+
+Q08: What right covers practising a profession or carrying on a trade or business?
+Expected source passage/page(s): PDF page(s) 41; Article 19(1)(g).
+  #1 hybrid=0.01639344 | BM25 rank=1 score=36.956940 | semantic rank=1 cosine=0.480368 | page=42 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part III.—Fundamental Rights) 11 (6) Nothing in sub-clause (g) of the said clause shall affect the operation of any existing law in so far as it imposes, or prevent the State from making any law imposing, in the interests of the general public, reasonable restrictions on the exercise of the right conferred by the said sub-clause, and, in particular, 1[nothing in the said sub-clause shall...
+  #2 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.443546 | page=182 | source=constitution of india.pdf
+     Excerpt: ature of the duties to be performed by it and its organisation and procedure.
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.369326 | page=53 | source=constitution of india.pdf
+     Excerpt: ertain cases.—The State shall, within the limits of its economic capacity and development, make effective provision for securing the right to work, to education and to public assistance in cases of unemployment, old age, sickness and disablement, and in other cases of undeserved want. 42. Provision for just and humane conditions of work and maternity relief.—The State shall make provision for securing just and hum...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.355094 | page=45 | source=constitution of india.pdf
+     Excerpt: er, morality and health, every religious denomination or any section thereof shall have the right— (a) to establish and maintain institutions for religious and charitable purposes;
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.353924 | page=53 | source=constitution of india.pdf
+     Excerpt: f industries.—The State shall take steps, by suitable legislation or in any other way, to secure the participation of workers in the management of undertakings, establishments or other organisations engaged in any industry.] ______________________________________________ 1. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 7, for cl. (f) (w.e.f. 3-1-1977). 2. Ins. by s. 8, ibid. (w.e.f. 3-1-1977). 3...
+
+Q09: What does Article 21 say about life and personal liberty?
+Expected source passage/page(s): PDF page(s) 42; No person shall be deprived of life or personal liberty except according to procedure established by law.
+  #1 hybrid=0.01612903 | BM25 rank=2 score=19.720630 | semantic rank=2 cosine=0.505920 | page=5 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (ii) PART III FUNDAMENTAL RIGHTS General 12. Definition. 13. Laws inconsistent with or in derogation of the fundamental rights. Right to Equality 14. Equality before law. 15. Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth. 16. Equality of opportunity in matters of public employment. 17. Abolition of Untouchability. 18. Abolition of titles. Right to Freedo...
+  #2 hybrid=0.01585553 | BM25 rank=1 score=24.861327 | semantic rank=4 cosine=0.466452 | page=42 | source=constitution of india.pdf
+     Excerpt: offence except for violation of a law in force at the time of the commission of the Act charged as an offence, nor be subjected to a penalty greater than that which might have been inflicted under the law in force at the time of the commission of the offence. (2) No person shall be prosecuted and punished for the same offence more than once. (3) No person accused of any offence shall be compelled to be a witness a...
+  #3 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.507808 | page=77 | source=constitution of india.pdf
+     Excerpt: r the purposes of this article" (w.e.f. 1-3-1985). 3. Ins. by s. 3, ibid. (w.e.f. 1-3-1985). 4. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 20, for art. 103 (w.e.f. 3-1-1977) and further subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 14, for art. 103 (w.e.f. 20-6-1979).
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.480021 | page=34 | source=constitution of india.pdf
+     Excerpt: the Constitution (Eighteenth Amendment) Act, 1966, s. 2 (w.e.f. 27-8-1966).
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.461306 | page=49 | source=constitution of india.pdf
+     Excerpt: in force.] 3[31C. Saving of laws giving effect to certain directive principles.— Notwithstanding anything contained in article 13, no law giving effect to the policy of the State towards securing 4[all or any of the principles laid down in Part IV] shall be deemed to be void on the ground that it is inconsistent with, or takes away or abridges any of the rights conferred by 5[article 14 or article 19;] 6[and no la...
+
+Q10: What does Article 21A require regarding children's education?
+Expected source passage/page(s): PDF page(s) 42; The State shall provide free and compulsory education to children aged six to fourteen, as determined by law.
+  #1 hybrid=0.01553114 | BM25 rank=3 score=10.110560 | semantic rank=5 cosine=0.466781 | page=42 | source=constitution of india.pdf
+     Excerpt: offence except for violation of a law in force at the time of the commission of the Act charged as an offence, nor be subjected to a penalty greater than that which might have been inflicted under the law in force at the time of the commission of the offence. (2) No person shall be prosecuted and punished for the same offence more than once. (3) No person accused of any offence shall be compelled to be a witness a...
+  #2 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.529440 | page=56 | source=constitution of india.pdf
+     Excerpt: quiry and reform; (i) to safeguard public property and to abjure violence; (j) to strive towards excellence in all spheres of individual and collective activity so that the nation constantly rises to higher levels of endeavour and achievement; ] 2[(k) who is a parent or guardian to provide opportunities for education to his child or, as the case may be, ward between the age of six and fourteen years.] ____________...
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.494064 | page=77 | source=constitution of india.pdf
+     Excerpt: r the purposes of this article" (w.e.f. 1-3-1985). 3. Ins. by s. 3, ibid. (w.e.f. 1-3-1985). 4. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 20, for art. 103 (w.e.f. 3-1-1977) and further subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 14, for art. 103 (w.e.f. 20-6-1979).
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.492283 | page=46 | source=constitution of india.pdf
+     Excerpt: 3) No person attending any educational institution recognised by the State or receiving aid out of State funds shall be required to take part in any religious instruction that may be imparted in such institution or to attend any religious worship that may be conducted in such institution or in any premises attached thereto unless such person or, if such person is a minor, his guardian has given his consent thereto...
+  #5 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.470902 | page=6 | source=constitution of india.pdf
+     Excerpt: Contents ARTICLES (iii) Cultural and Educational Rights 29. Protection of interests of minorities. 30. Right of minorities to establish and administer educational institutions. [31. Compulsory acquisition of property. —Omitted.] Saving of Certain Laws 31A. Saving of Laws providing for acquisition of estates, etc. 31B. Validation of certain Acts and Regulations. 31C. Saving of laws giving effect to certain directiv...
+
+Q11: What protections does Article 20 provide against repeated punishment and compelled testimony?
+Expected source passage/page(s): PDF page(s) 42; Article 20(2) addresses repeated prosecution and punishment for the same offence; Article 20(3) protects an accused from being compelled to be a witness against himself.
+  #1 hybrid=0.01631412 | BM25 rank=2 score=13.065458 | semantic rank=1 cosine=0.560449 | page=63 | source=constitution of india.pdf
+     Excerpt: nt or to suspend, remit or commute the sentence of any person convicted of any offence— (a) in all cases where the punishment or sentence is by a Court Martial; (b) in all cases where the punishment or sentence is for an offence ______________________________________________ 1. Subs. by the Constitution (Thirty-ninth Amendment) Act, 1975, s. 2 (w.e.f 10-8-1975) and further subs. by the Constitution (Forty-fourth A...
+  #2 hybrid=0.01620836 | BM25 rank=1 score=14.583834 | semantic rank=2 cosine=0.554853 | page=42 | source=constitution of india.pdf
+     Excerpt: offence except for violation of a law in force at the time of the commission of the Act charged as an offence, nor be subjected to a penalty greater than that which might have been inflicted under the law in force at the time of the commission of the offence. (2) No person shall be prosecuted and punished for the same offence more than once. (3) No person accused of any offence shall be compelled to be a witness a...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.489472 | page=129 | source=constitution of india.pdf
+     Excerpt: f record.—Every High Court shall be a court of record and shall have all the powers of such a court including the power to punish for contempt of itself. ______________________________________________ 1. Cl. (4) was ins. by the Constitution (Thirty-eighth Amendment) Act, 1975, s. 3 (with retrospective effect) and omitted by the Constitution (Forty-fourth Amendment) Act, 1978, s. 27 (w.e.f. 20-6-1979). 2. The brack...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.480789 | page=93 | source=constitution of india.pdf
+     Excerpt: an appeal under sub-clause (c) shall lie subject to such provisions as may be made in that behalf under clause (1) of article 145 and to such conditions as the High Court may establish or require. ______________________________________________ 1. Certain words omitted by s. 17, ibid. (w.e.f. 1-8-1979). 2. Subs. by the Constitution (Thirtieth Amendment) Act, 1972, s. 2, for cl. (1) (w.e.f. 27-2-1973). 3. Subs. by t...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.474840 | page=135 | source=constitution of india.pdf
+     Excerpt: Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 38 for art. 226 (w.e.f. 1-2-1977). 3. The words, figures and letters "but subject to the provisions of article 131A and article 226A" omitted by the Constitution (Forty-third Amendment) Act, 1977, s. 7 (w.e.f. 13-4-1978). 4. Subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 30, for the portion beginning with "writs in the nature of hab...
+
+Q12: What safeguards does Article 22 provide following arrest?
+Expected source passage/page(s): PDF page(s) 42; The arrested person must be informed of the grounds of arrest and may consult and be defended by a legal practitioner of choice.
+  #1 hybrid=0.01639344 | BM25 rank=1 score=12.186225 | semantic rank=1 cosine=0.547436 | page=42 | source=constitution of india.pdf
+     Excerpt: offence except for violation of a law in force at the time of the commission of the Act charged as an offence, nor be subjected to a penalty greater than that which might have been inflicted under the law in force at the time of the commission of the offence. (2) No person shall be prosecuted and punished for the same offence more than once. (3) No person accused of any offence shall be compelled to be a witness a...
+  #2 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.543872 | page=44 | source=constitution of india.pdf
+     Excerpt: es under which, and the class or classes of cases in which, a person may be detained for a period longer than three months under any law providing for preventive detention without obtaining the opinion of an Advisory Board in accordance with the provisions of sub- clause (a) of clause (4); (b) the maximum period for which any person may in any class or classes of cases be detained under any law providing for pre...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.528146 | page=353 | source=constitution of india.pdf
+     Excerpt: l matters included in the Indian Penal Code at the commencement of this Constitution but excluding offences against laws with respect to any of the matters specified in List I or List II and excluding the use of naval, military or air forces or any other armed forces of the Union in aid of the civil power. 2. Criminal procedure, including all matters included in the Code of Criminal Procedure at the commencement o...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.518826 | page=43 | source=constitution of india.pdf
+     Excerpt: its opinion sufficient cause for such detention: ______________________________________________  Cl. (4) shall stand substituted by the Constitution (Forty-fourth Amendment) Act, 1978, s. 3 (date yet to be notified) as— "(4) No law providing for preventive detention shall authorise the detention of a person for a longer period than two months unless an Advisory Board constituted in accordance with the recommendat...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.502820 | page=63 | source=constitution of india.pdf
+     Excerpt: nt or to suspend, remit or commute the sentence of any person convicted of any offence— (a) in all cases where the punishment or sentence is by a Court Martial; (b) in all cases where the punishment or sentence is for an offence ______________________________________________ 1. Subs. by the Constitution (Thirty-ninth Amendment) Act, 1975, s. 2 (w.e.f 10-8-1975) and further subs. by the Constitution (Forty-fourth A...
+
+Q13: What does Article 14 guarantee?
+Expected source passage/page(s): PDF page(s) 37; Equality before the law and equal protection of the laws.
+  #1 hybrid=0.01577621 | BM25 rank=2 score=7.453605 | semantic rank=4 cosine=0.421207 | page=49 | source=constitution of india.pdf
+     Excerpt: in force.] 3[31C. Saving of laws giving effect to certain directive principles.— Notwithstanding anything contained in article 13, no law giving effect to the policy of the State towards securing 4[all or any of the principles laid down in Part IV] shall be deemed to be void on the ground that it is inconsistent with, or takes away or abridges any of the rights conferred by 5[article 14 or article 19;] 6[and no la...
+  #2 hybrid=0.01147541 | BM25 rank=— score=0.000000 | semantic rank=1 cosine=0.463105 | page=337 | source=constitution of india.pdf
+     Excerpt: s. 13, for paragraph 20A (w.e.f. 16- 2-1972).
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.440896 | page=137 | source=constitution of india.pdf
+     Excerpt: r "it shall withdraw the case and may—" (w.e.f. 1-2-1977). 3. The words, figures and letter, "subject to the provisions of article 131A," omitted by the Constitution (Forty-third Amendment) Act, 1977, s. 9 (w.e.f. 13-4-1978). 4. Ins. by the Constitution (Forty-second Amendment) Act, 1976, s. 42 (w.e.f. 1-2-1977).
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.437430 | page=93 | source=constitution of india.pdf
+     Excerpt: an appeal under sub-clause (c) shall lie subject to such provisions as may be made in that behalf under clause (1) of article 145 and to such conditions as the High Court may establish or require. ______________________________________________ 1. Certain words omitted by s. 17, ibid. (w.e.f. 1-8-1979). 2. Subs. by the Constitution (Thirtieth Amendment) Act, 1972, s. 2, for cl. (1) (w.e.f. 27-2-1973). 3. Subs. by t...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.419985 | page=77 | source=constitution of india.pdf
+     Excerpt: r the purposes of this article" (w.e.f. 1-3-1985). 3. Ins. by s. 3, ibid. (w.e.f. 1-3-1985). 4. Subs. by the Constitution (Forty-second Amendment) Act, 1976, s. 20, for art. 103 (w.e.f. 3-1-1977) and further subs. by the Constitution (Forty-fourth Amendment) Act, 1978, s. 14, for art. 103 (w.e.f. 20-6-1979).
+
+Q14: What provision provides freedom of speech in Parliament?
+Expected source passage/page(s): PDF page(s) 78; Article 105(1), freedom of speech in Parliament, subject to the Constitution and parliamentary rules.
+  #1 hybrid=0.01623731 | BM25 rank=3 score=15.699857 | semantic rank=1 cosine=0.661779 | page=78 | source=constitution of india.pdf
+     Excerpt: e provisions of this Constitution and to the rules and standing orders regulating the procedure of Parliament, there shall be freedom of speech in Parliament. (2) No member of Parliament shall be liable to any proceedings in any court in respect of anything said or any vote given by him in Parliament or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority...
+  #2 hybrid=0.01597782 | BM25 rank=4 score=14.615717 | semantic rank=2 cosine=0.596823 | page=78 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part V.—The Union) 47 (2) Before giving any decision on any such question, the President shall obtain the opinion of the Election Commission and shall act according to such opinion.] 104. Penalty for sitting and voting before making oath or affirmation under article 99 or when not qualified or when disqualified.—If a person sits or votes as a member of either House of Parliament before h...
+  #3 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.591047 | page=118 | source=constitution of india.pdf
+     Excerpt: ating the procedure of the Legislature, there shall be freedom of speech in the Legislature of every State. (2) No member of the Legislature of a State shall be liable to any proceedings in any court in respect of anything said or any vote given by him in the Legislature or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority of a House of such a Legislatu...
+  #4 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.559295 | page=238 | source=constitution of india.pdf
+     Excerpt: ent making provision for the language to be used for any of the purposes mentioned in clause (1) of article 348 shall be introduced or moved in either House of Parliament without the previous sanction of the President, and the President shall not give his sanction to the introduction of any such Bill or the moving of any such amendment except after he has taken into consideration the recommendations of the Commiss...
+  #5 hybrid=0.01076923 | BM25 rank=— score=0.000000 | semantic rank=5 cosine=0.540915 | page=118 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part VI.—The States) 87 193. Penalty for sitting and voting before making oath or affirmation under article 188 or when not qualified or when disqualified.—If a person sits or votes as a member of the Legislative Assembly or the Legislative Council of a State before he has complied with the requirements of article 188, or when he knows that he is not qualified or that he is disqualified...
+
+Q15: What provision provides freedom of speech in State Legislatures?
+Expected source passage/page(s): PDF page(s) 118; Article 194(1), freedom of speech in a State Legislature, subject to the Constitution and legislative rules.
+  #1 hybrid=0.01616291 | BM25 rank=4 score=16.125233 | semantic rank=1 cosine=0.670648 | page=118 | source=constitution of india.pdf
+     Excerpt: ating the procedure of the Legislature, there shall be freedom of speech in the Legislature of every State. (2) No member of the Legislature of a State shall be liable to any proceedings in any court in respect of anything said or any vote given by him in the Legislature or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority of a House of such a Legislatu...
+  #2 hybrid=0.01568726 | BM25 rank=1 score=20.073312 | semantic rank=5 cosine=0.550116 | page=118 | source=constitution of india.pdf
+     Excerpt: THE CONSTITUTION OF INDIA (Part VI.—The States) 87 193. Penalty for sitting and voting before making oath or affirmation under article 188 or when not qualified or when disqualified.—If a person sits or votes as a member of the Legislative Assembly or the Legislative Council of a State before he has complied with the requirements of article 188, or when he knows that he is not qualified or that he is disqualified...
+  #3 hybrid=0.01129032 | BM25 rank=— score=0.000000 | semantic rank=2 cosine=0.577971 | page=153 | source=constitution of india.pdf
+     Excerpt: in such manner as the Legislature of a State may, by law, provide.
+  #4 hybrid=0.01111111 | BM25 rank=— score=0.000000 | semantic rank=3 cosine=0.563454 | page=178 | source=constitution of india.pdf
+     Excerpt: States except as provided in articles 249 and 250 should be regulated in such States by Parliament by law, and if resolutions to that effect are passed by all the Houses of the Legislatures of those States, it shall be lawful for Parliament to pass an act for regulating that matter accordingly, and any Act so passed shall apply to such States and to any other State by which it is adopted afterwards by resolution p...
+  #5 hybrid=0.01093750 | BM25 rank=— score=0.000000 | semantic rank=4 cosine=0.558598 | page=78 | source=constitution of india.pdf
+     Excerpt: e provisions of this Constitution and to the rules and standing orders regulating the procedure of Parliament, there shall be freedom of speech in Parliament. (2) No member of Parliament shall be liable to any proceedings in any court in respect of anything said or any vote given by him in Parliament or any committee thereof, and no person shall be so liable in respect of the publication by or under the authority...
+
+HUMAN REVIEW — RELEVANCE LABELS
+==============================================================================
+No relevance judgments have been assigned by this script.
+For each query/result above, a reviewer should label the passage as exactly one of:
+  direct | partial | related | wrong
+Do not treat expected page references as automatic relevance labels.
+Q01 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q02 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q03 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q04 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q05 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q06 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q07 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q08 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q09 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q10 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q11 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q12 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q13 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q14 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+Q15 labels: R1 [UNJUDGED]  R2 [UNJUDGED]  R3 [UNJUDGED]  R4 [UNJUDGED]  R5 [UNJUDGED]
+
+METRICS
+==============================================================================
+Recall@5: NOT COMPUTED — no human relevance labels supplied.
+MRR@5: NOT COMPUTED — no human relevance labels supplied.
+Top-result direct-answer rate: NOT COMPUTED — no human relevance labels supplied.
+Expected passages/pages are listed for review, but they are not used as fabricated judgments.
+
+SAFETY / SCOPE
+==============================================================================
+Only the test Constitution PDF was parsed as a source document.
+The production HybridRetriever was not instantiated; production FAISS, metadata, and BM25 inputs were not loaded.
+Only a temporary in-memory BM25 model and FAISS vector store were created.
+No downloads, external APIs, LLM calls, or production index writes were made.
