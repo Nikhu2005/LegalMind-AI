@@ -36,3 +36,6 @@ frontend/dist/
 .DS_Store
 Thumbs.db
 data/external/
+
+# Local data: search indexes, metadata, user databases (large, never commit)
+data/
