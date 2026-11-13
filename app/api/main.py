@@ -10,6 +10,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
+from app.auth.guard import require_login
+from app.auth.routes import router as auth_router
 from app.documents.chunker import create_chunks
 from app.documents.current_case import (
     analyze_current_case,
@@ -36,6 +38,9 @@ app = FastAPI(
     description="AI-Powered Legal Document Intelligence & Case Law Research System",
     version="1.0.0",
 )
+
+app.include_router(auth_router)
+app.middleware("http")(require_login)
 
 # ============================================================
 # LOAD RAG MODELS ONCE AT STARTUP

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AuthPage from "./components/AuthPage.jsx";
 
 import {
   LayoutDashboard,
@@ -12,8 +13,9 @@ import {
   Bell,
   ChevronDown,
   Upload,
+  ArrowUp,
+  ArrowRight,
   ArrowUpRight,
-  Clock3,
   BookOpen,
   CheckCircle2,
   AlertCircle,
@@ -51,6 +53,39 @@ const LANGUAGE_OPTIONS = [
   { value: "Punjabi", label: "Punjabi — ਪੰਜਾਬੀ" },
 ];
 
+const HOME_FEATURES = [
+  {
+    page: "Case Law Search",
+    label: "Case Law Search",
+    description: "Find judgments and passages by keyword or meaning",
+    icon: <Search size={17} />,
+  },
+  {
+    page: "Analyze Current Case",
+    label: "Analyze Current Case",
+    description: "Upload a case PDF and find similar past judgments",
+    icon: <FileText size={17} />,
+  },
+  {
+    page: "Compare Cases",
+    label: "Compare Cases",
+    description: "Compare two judgments side by side",
+    icon: <GitCompare size={17} />,
+  },
+  {
+    page: "Legal Documents",
+    label: "Legal Documents",
+    description: "Browse the indexed judgments and orders",
+    icon: <Library size={17} />,
+  },
+  {
+    page: "Analytics",
+    label: "Analytics",
+    description: "Knowledge-base coverage and research activity",
+    icon: <BarChart3 size={17} />,
+  },
+];
+
 const SELECT_CLASS =
   "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
 const RRF_RANK_CONSTANT = 60;
@@ -73,6 +108,9 @@ function App() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
 
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [homeQuestion, setHomeQuestion] = useState("");
   const [askQuestion, setAskQuestion] = useState("");
   const [askCourt, setAskCourt] = useState("");
   const [askDocumentType, setAskDocumentType] = useState("");
@@ -262,6 +300,39 @@ function App() {
   /* Navigation + file handling                                          */
   /* ------------------------------------------------------------------ */
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const checkSession = async () => {
+      let user = null;
+      try {
+        const response = await fetch("/api/auth/me", {
+          signal: controller.signal,
+        });
+        if (response.ok) user = await response.json();
+      } catch {
+        user = null;
+      }
+
+      if (!controller.signal.aborted) {
+        setCurrentUser(user);
+        setAuthChecked(true);
+      }
+    };
+
+    checkSession();
+    return () => controller.abort();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      setCurrentUser(null);
+      setActivePage("Dashboard");
+    }
+  };
+
   const navigate = (page) => {
     setActivePage(page);
     setError("");
@@ -356,8 +427,10 @@ function App() {
     setError("");
   };
 
-  const askLegalMind = async () => {
-    const question = askQuestion.trim();
+  const askLegalMind = async (questionOverride) => {
+    const question = (
+      typeof questionOverride === "string" ? questionOverride : askQuestion
+    ).trim();
 
     if (!question) {
       setError("Please enter a legal question first.");
@@ -465,164 +538,101 @@ function App() {
   /* Pages                                                               */
   /* ------------------------------------------------------------------ */
 
+  const handleHomeSubmit = (event) => {
+    event.preventDefault();
+
+    const question = homeQuestion.trim();
+
+    if (!question) return;
+
+    setHomeQuestion("");
+    setAskQuestion(question);
+    navigate("Ask LegalMind");
+    askLegalMind(question);
+  };
+
+  const handleHomeKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      handleHomeSubmit(event);
+    }
+  };
+
   const renderDashboard = () => (
-    <>
-      <PageHeader
-        eyebrow="Legal Research Workspace"
-        title="Good evening"
-        description="Search Indian case law, analyze legal documents, and discover relevant judgments with AI-powered research."
-        buttonText="Analyze New Case"
-        buttonIcon={<Upload size={17} />}
-        onButtonClick={() => navigate("Analyze Current Case")}
-      />
-
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          title="Indexed Cases"
-          value="4"
-          subtitle="Indian court judgments"
-          icon={<Scale size={19} />}
-          trend="Knowledge base"
-        />
-        <StatCard
-          title="Legal Documents"
-          value="965+"
-          subtitle="Indexed passages"
-          icon={<FileText size={19} />}
-          trend="Indexed"
-        />
-        <StatCard
-          title="AI Searches"
-          value="128"
-          subtitle="Research queries"
-          icon={<Search size={19} />}
-          trend="Research activity"
-        />
-        <StatCard
-          title="System Status"
-          value="Online"
-          subtitle="AI services operational"
-          icon={<ArrowUpRight size={19} />}
-          trend="All systems normal"
-          online
-        />
+    <div className="mx-auto flex max-w-2xl flex-col items-center pt-8 sm:pt-14">
+      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-700 text-white shadow-md shadow-blue-200">
+        <Scale size={26} strokeWidth={2.2} />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1.55fr_1fr]">
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-6 flex items-start justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">
-                Start Legal Research
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Choose a research workflow to get started.
-              </p>
-            </div>
-            <div className="rounded-xl bg-blue-50 p-2.5 text-blue-700">
-              <BookOpen size={20} />
-            </div>
-          </div>
+      <h2 className="text-center text-3xl font-semibold tracking-tight text-slate-900">
+        Ask LegalMind
+      </h2>
+      <p className="mt-2 text-center text-sm text-slate-500">
+        Research Indian case law. Answers are grounded in the judgments we index.
+      </p>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ResearchCard
-              icon={<Search size={20} />}
-              title="Search Case Law"
-              description="Find relevant judgments using semantic and keyword search."
-              onClick={() => navigate("Case Law Search")}
-            />
-            <ResearchCard
-              icon={<Scale size={20} />}
-              title="Ask LegalMind"
-              description="Ask questions and receive grounded answers from legal documents."
-              onClick={() => navigate("Ask LegalMind")}
-            />
-            <ResearchCard
-              icon={<FileText size={20} />}
-              title="Analyze Current Case"
-              description="Extract legal issues, Acts, sections, facts and concepts."
-              onClick={() => navigate("Analyze Current Case")}
-            />
-            <ResearchCard
-              icon={<GitCompare size={20} />}
-              title="Compare Cases"
-              description="Compare facts, issues, reasoning and decisions across cases."
-              onClick={() => navigate("Compare Cases")}
-            />
-          </div>
-        </section>
+      <form onSubmit={handleHomeSubmit} className="mt-8 w-full">
+        <div className="flex items-end gap-2 rounded-3xl border border-slate-200 bg-white p-2.5 pl-5 shadow-lg shadow-slate-200/70 transition focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100">
+          <textarea
+            value={homeQuestion}
+            onChange={(event) => setHomeQuestion(event.target.value)}
+            onKeyDown={handleHomeKeyDown}
+            rows={2}
+            aria-label="Your legal question"
+            placeholder="Ask a legal question…"
+            className="max-h-48 flex-1 resize-none bg-transparent py-2 text-[15px] leading-6 text-slate-800 outline-none placeholder:text-slate-400"
+          />
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-slate-900">
-                Recent Research
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Your latest legal research activity.
-              </p>
-            </div>
-            <Clock3 size={19} className="text-slate-400" />
-          </div>
-
-          <div className="space-y-1">
-            <ActivityItem
-              title="Similar judgment analysis"
-              description="Current case research"
-              time="Today"
-              icon={<Scale size={16} />}
-            />
-            <ActivityItem
-              title="Case law search"
-              description="Supreme Court judgments"
-              time="Today"
-              icon={<Search size={16} />}
-            />
-            <ActivityItem
-              title="Legal document analysis"
-              description="PDF document processed"
-              time="Yesterday"
-              icon={<FileText size={16} />}
-            />
-            <ActivityItem
-              title="Case comparison"
-              description="Two judgments compared"
-              time="Yesterday"
-              icon={<GitCompare size={16} />}
-            />
-          </div>
-        </section>
-      </div>
-
-      <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="mb-6">
-          <h3 className="text-lg font-bold text-slate-900">
-            Legal Knowledge Base
-          </h3>
-          <p className="mt-1 text-sm text-slate-500">
-            Current indexed legal research sources.
-          </p>
+          <button
+            type="submit"
+            disabled={!homeQuestion.trim()}
+            aria-label="Send question"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+          >
+            <ArrowUp size={18} strokeWidth={2.4} />
+          </button>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <KnowledgeCard
-            court="Supreme Court of India"
-            cases="4"
-            type="Judgments"
-          />
-          <KnowledgeCard
-            court="High Courts"
-            cases="Coming soon"
-            type="Judgments"
-          />
-          <KnowledgeCard
-            court="District Courts"
-            cases="Coming soon"
-            type="Judgments"
-          />
-        </div>
-      </section>
-    </>
+        <p className="mt-2.5 text-center text-[11px] text-slate-400">
+          Enter to ask · Shift + Enter for a new line
+        </p>
+      </form>
+
+      <nav aria-label="LegalMind tools" className="mt-12 w-full">
+        <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+          Tools
+        </p>
+
+        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+          {HOME_FEATURES.map(({ page, label, description, icon }) => (
+            <li key={page}>
+              <button
+                type="button"
+                onClick={() => navigate(page)}
+                className="group flex w-full items-center gap-4 px-4 py-3.5 text-left transition hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700 transition group-hover:bg-blue-700 group-hover:text-white">
+                  {icon}
+                </span>
+
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-slate-900">
+                    {label}
+                  </span>
+                  <span className="block truncate text-xs text-slate-500">
+                    {description}
+                  </span>
+                </span>
+
+                <ArrowRight
+                  size={16}
+                  className="shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-blue-700"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
   );
 
   const renderAnalyzePage = () => (
@@ -1557,6 +1567,18 @@ function App() {
     }
   };
 
+  if (!authChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 text-slate-400">
+        <Loader2 size={22} className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return <AuthPage onAuthenticated={setCurrentUser} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <style>{`
@@ -1611,25 +1633,26 @@ function App() {
 
             <div className="h-7 w-px bg-slate-200" />
 
-            <button
-              type="button"
-              className="flex items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-slate-50"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                A
+            <div className="flex items-center gap-3 rounded-xl px-2 py-1.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-bold uppercase text-blue-700">
+                {currentUser.name.charAt(0)}
               </div>
 
               <div className="hidden text-left sm:block">
                 <p className="text-sm font-semibold text-slate-800">
-                  Legal Researcher
+                  {currentUser.name}
                 </p>
-                <p className="text-[11px] text-slate-400">
-                  Research Workspace
-                </p>
+                <p className="text-[11px] text-slate-400">{currentUser.email}</p>
               </div>
 
-              <ChevronDown size={16} className="text-slate-400" />
-            </button>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+              >
+                Sign out
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -1805,95 +1828,6 @@ function SidebarItem({ icon, label, active = false, onClick }) {
       {icon}
       <span>{label}</span>
     </button>
-  );
-}
-
-function StatCard({ title, value, subtitle, icon, trend, online = false }) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between">
-        <div className="rounded-xl bg-slate-50 p-2.5 text-slate-600">
-          {icon}
-        </div>
-
-        {online && (
-          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Live
-          </span>
-        )}
-      </div>
-
-      <p className="mt-5 text-xs font-medium text-slate-400">{title}</p>
-
-      <p className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
-        {value}
-      </p>
-
-      <div className="mt-2 flex items-center justify-between gap-2">
-        <span className="text-xs text-slate-400">{subtitle}</span>
-        <span className="text-[10px] font-semibold text-blue-600">{trend}</span>
-      </div>
-    </div>
-  );
-}
-
-function ResearchCard({ icon, title, description, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group rounded-xl border border-slate-200 p-4 text-left transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50/40 hover:shadow-sm"
-    >
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-700">
-        {icon}
-      </div>
-
-      <h4 className="text-sm font-bold text-slate-800">{title}</h4>
-
-      <p className="mt-1.5 text-xs leading-5 text-slate-500">{description}</p>
-
-      <span className="mt-4 inline-block text-xs font-semibold text-blue-700">
-        Open →
-      </span>
-    </button>
-  );
-}
-
-function ActivityItem({ title, description, time, icon }) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl px-2 py-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
-        {icon}
-      </div>
-
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-slate-800">{title}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-400">{description}</p>
-      </div>
-
-      <span className="shrink-0 text-[11px] text-slate-400">{time}</span>
-    </div>
-  );
-}
-
-function KnowledgeCard({ court, cases, type }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-blue-700 shadow-sm">
-          <Scale size={17} />
-        </div>
-
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-          {type}
-        </span>
-      </div>
-
-      <h4 className="mt-4 text-sm font-bold text-slate-800">{court}</h4>
-
-      <p className="mt-1 text-xs text-slate-500">{cases} indexed cases</p>
-    </div>
   );
 }
 
